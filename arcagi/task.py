@@ -10,7 +10,7 @@ class Task():
         self.train  = [{k:np.array(i[k]) for k in i.keys()} for i in task['train']]
         self.test = task['test']
         self.test[0]['input'] = np.array(self.test[0]['input'])
-        if self.test[0].get('output'):
+        if self.test[0].get('output') is not None:
             self.test[0]['output'] = np.array(self.test[0]['output'])
 
         # saves interesting info about the task
