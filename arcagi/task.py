@@ -1,9 +1,11 @@
 import numpy as np
+from arcagi.plotting import plot_task
 
 class Task():
 
     def __init__(self, task):
         # transforms lists within each task into np.array
+        self.task = task
         self.train = task['train']
         self.train  = [{k:np.array(i[k]) for k in i.keys()} for i in task['train']]
         self.test = task['test']
@@ -30,6 +32,10 @@ class Task():
         l = [self.training_examples_sizes[i][j] == shape for j in (0,1)
              for i in range(len(self.training_examples_sizes))]
         return len(l)==sum(l)
+
+    def __repr__(self):
+        plot_task(self.task)
+        return ''
 
 if __name__=='__main__':
     from arcagi.data import Arcagi2
