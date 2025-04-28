@@ -47,6 +47,7 @@ s = Shapes(g.grid, g.shapes[2]) # there are 2 types of shape, g.shapes[1] and g.
 s
 ```
 \> output
+
 ![alt text](img/shapes.png)
 ___
 
@@ -56,6 +57,7 @@ g = Grid(task.train[0]['output'])
 g
 ```
 \> output
+
 ![alt text](img/grid2.png)
 
 ```python
@@ -63,4 +65,5 @@ s = Shapes(g.grid, g.shapes[2])
 s
 ```
 \> output
+
 ![alt text](img/shapes2.png)
