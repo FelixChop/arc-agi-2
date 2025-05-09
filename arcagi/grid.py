@@ -168,12 +168,10 @@ if __name__=='__main__':
     i = random.randint(1, 1000)
     key = list(data['training_challenges'])[i]
     task = data['training_challenges'][key]
-    from arcagi.task import Task
-    t = Task(task)
-    i = random.randint(0, len(t.train)-1)
+    i = random.randint(0, len(task['train'])-1)
     for io in ['input', 'output']:
         print(io.capitalize())
-        g = Grid(t.train[i][io])
+        g = Grid(task['train'][i][io])
         print('grid')
         print(g.grid)
         if g.background.sum()==0:

@@ -69,12 +69,15 @@ class Shapes:
     def id_to_shape(self, shape_id):
         return np.array([list(s) for s in shape_id.split('_')]).astype(int)
 
+    def table_colors_shapes(self):
+        res = pd.DataFrame(self.color_shapes_id).fillna(0).astype(int)
+        return res[sorted(res.columns)] # réordonne par couleurs croissantes
+
     def plot_shapes(self):
         '''
         Plots a table with index row: color ID, index column: shape ID, values: count
         '''
-        table_colors_shapes = pd.DataFrame(self.color_shapes_id).fillna(0).astype(int)
-        table_colors_shapes = table_colors_shapes[sorted(table_colors_shapes.columns)] # réordonne par couleurs croissantes
+        table_colors_shapes = self.table_colors_shapes()
         fig, axs = plt.subplots(nrows=table_colors_shapes.shape[0]+1,
                                 ncols=table_colors_shapes.shape[1]+1)
 
@@ -114,11 +117,9 @@ if __name__=='__main__':
     i = 1
     key = list(data['training_challenges'])[i]
     task = data['training_challenges'][key]
-    from arcagi.task import Task
-    t = Task(task)
-    i = random.randint(1, len(t.train))
+    i = random.randint(1, len(task['train']))
     from arcagi.grid import Grid
-    g = Grid(t.train[i-1]['input'])
+    g = Grid(task['train'][i-1]['input'])
     s = Shapes(g.grid, g.shapes[2])
     print(g.grid)
     print(s.shapes_id)

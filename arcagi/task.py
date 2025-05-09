@@ -1,5 +1,9 @@
 import numpy as np
 from arcagi.plotting import plot_task
+from arcagi.grid import Grid
+from arcagi.shapes import Shapes
+from utils import io, tt
+from arcagi.llm import llm, prompt_input_output
 
 class Task():
 
@@ -9,16 +13,14 @@ class Task():
         self.train = task['train']
         self.train  = [{k:np.array(i[k]) for k in i.keys()} for i in task['train']]
         self.test = task['test']
-        self.test[0]['input'] = np.array(self.test[0]['input'])
-        if self.test[0].get('output') is not None:
-            self.test[0]['output'] = np.array(self.test[0]['output'])
 
         # saves interesting info about the task
         self.training_examples_number = len(self.train) # number of training examples
         self.training_examples_sizes = [(self.train[i]['input'].shape,
                                          self.train[i]['output'].shape)
                                         for i in range(self.training_examples_number)] # shapes of grids
-        self.test_size = self.test[0]['input'].shape
+
+        # creates Grids and Shapes
 
     def is_same_size_each_input_output(self):
         # checks if each pair of input/output is stable by size
@@ -37,15 +39,39 @@ class Task():
         plot_task(self.task)
         return ''
 
+    def create_grid_and_shapes_to_text(self):
+        res = {}
+        for a in tt():
+            res[a] = {}
+            for b in range(len(self.task[a])):
+                res[a][b] = {}
+                for c in io():
+                    if a == 'test' and c == 'output':
+                        continue # do not handle test data
+                    g = Grid(self.task[a][b][c])
+                    s = Shapes(g.grid, g.shapes[2])
+                    res[a][b][c] = self.grid_and_shapes_to_text(g,s)
+        return res
+
+    def grid_and_shapes_to_text(self, grid, shapes):
+        return f'''
+        background color ID: {grid._background},
+        task delimiter color ID: {grid.shape_splits[2][0]},
+        for each color ID, it tells how many shape ID there are: {shapes.color_shapes_id}
+        '''
+
+    def tasks_to_text(self):
+        grid_and_shapes_to_text = self.create_grid_and_shapes_to_text()
+        res = {}
+        for i in range(len(self.train)):
+            prompt = prompt_input_output(grid_and_shapes_to_text['train'][i]['input'],
+                                         grid_and_shapes_to_text['train'][i]['output'])
+            print(prompt)
+            res[i] = llm(prompt)
+        self.analysis = res
+
 if __name__=='__main__':
     from arcagi.data import Arcagi2
     data = Arcagi2().get_data()
-    import random
-    i = random.randint(1, 1000)
-    key = list(data['training_challenges'])[i]
-    task = data['training_challenges'][key]
-    t = Task(task)
-    print({'key':key,
-          'num_training_examples':t.training_examples_sizes,
-          'each_input_output_have_same_size':t.is_same_size_each_input_output(),
-          'all_input_output_have_same_size':t.is_same_size_all_input_output()})
+    task = Task(data['training_challenges']['009d5c81'])
+    task.analyze()
