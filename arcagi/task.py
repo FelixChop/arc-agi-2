@@ -2,7 +2,7 @@ import numpy as np
 from arcagi.plotting import plot_task
 from arcagi.grid import Grid
 from arcagi.shapes import Shapes
-from utils import io, tt
+from arcagi.utils import io, tt
 from arcagi.llm import llm, prompt_input_output
 
 class Task():
