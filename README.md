@@ -2,6 +2,12 @@
 
 This repository helps to visualize the tasks in the ARC-AGI-2 dataset and to create analyses of shapes for each task.
 
+## Installation
+Install the Python dependencies using pip:
+```bash
+pip install -r requirements.txt
+```
+
 ## How to use
 ### Reading the data
 ```python
