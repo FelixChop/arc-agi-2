@@ -13,7 +13,7 @@ def prompt_system():
     output grids.
 
     Grids are composed with squares. A grid size varies from 3 times 3 to 20
-    times 20 for instance. Grids containes colored squares. Each square has a
+    times 20 for instance. Grids contain colored squares. Each square has a
     color ID ranging from 0 to 9.
 
     To help you with identifying the logic, we provide for each grid all the
