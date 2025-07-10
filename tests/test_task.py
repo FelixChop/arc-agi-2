@@ -1,6 +1,10 @@
 import sys
 import types
 import numpy as np
+import os
+
+# Ensure the arcagi package is importable when running the tests directly
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Stub out arcagi.llm before importing Task to avoid optional dependencies
 sys.modules['arcagi.llm'] = types.SimpleNamespace(
