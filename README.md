@@ -19,13 +19,13 @@ task
 ![alt text](img/task.png)
 ___
 ```python
-task.tasks_is_same_size_all_input_output()
+task.is_same_size_all_input_output()
 ```
 \> output
 `False`
 ___
 ```python
-task.tasks_is_same_size_each_input_output()
+task.is_same_size_each_input_output()
 ```
 \> output
 `True`
